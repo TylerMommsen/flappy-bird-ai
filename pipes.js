@@ -8,7 +8,7 @@ class Pipes {
 		this.gapCenter = random(400, 900); // the center of the gap between top and bottom pipe
 		this.topPipeY = this.gapCenter - this.spacing / 2 - 1320;
 		this.bottomPipeY = this.gapCenter + this.spacing / 2;
-		this.passed; // has the bird passed the pipe
+		this.passed = false; // has the bird passed the pipe
 
 		this.move = () => {
 			this.x -= this.speed;
@@ -46,5 +46,14 @@ class Pipes {
 		} else {
 			return false;
 		}
+	}
+
+	// checks if bird passed pipe
+	birdPassed(bird) {
+		if (bird.x > this.x + this.w / 2 && this.passed === false) {
+			this.passed = true;
+			return true;
+		}
+		return false;
 	}
 }

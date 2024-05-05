@@ -4,6 +4,7 @@ pipes = [];
 let gameSpeed = 1;
 let ground;
 let gameOver = false;
+let score = 0;
 
 function setup() {
 	createCanvas(1000, 1320);
@@ -30,6 +31,10 @@ function draw() {
 				gameOver = true;
 			}
 
+			if (pipes[i].birdPassed(bird)) {
+				score++;
+			}
+
 			if (pipes[i].offScreen()) {
 				pipes.splice(i, 1);
 			}
@@ -49,6 +54,10 @@ function draw() {
 
 	bird.show();
 	ground.show();
+
+	fill(255);
+	textSize(80);
+	text(score, width / 2 - 40, 160);
 }
 
 function keyPressed() {
