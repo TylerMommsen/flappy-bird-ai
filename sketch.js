@@ -1,21 +1,14 @@
 let bird;
 let timer = 100; // timer for spawning pipes
-pipes = [];
-let gameSpeed = 1;
+let pipes = [];
 let ground;
 let gameOver = false;
 let score = 0;
 
-let bg;
-let groundImg;
-let birdImg;
-let pipeUpImg;
-let pipeDownImg;
+// visual assets
+let bg, groundImg, birdImg, pipeUpImg, pipeDownImg;
 let flappyFont;
-let hitSound;
-let flapSound;
-let pointSound;
-let failSound;
+let hitSound, flapSound, pointSound, failSound;
 
 function preload() {
 	bg = loadImage("assets/bg.png");
@@ -36,7 +29,6 @@ function preload() {
 
 function setup() {
 	createCanvas(1000, 1320);
-	background(0, 200, 255);
 
 	bird = new Bird(flapSound);
 	ground = new Ground();
@@ -74,7 +66,7 @@ function draw() {
 		}
 	}
 
-	bird.update();
+	bird.update(pipes);
 
 	if (ground.collidedWithBird(bird)) {
 		hitSound.play();

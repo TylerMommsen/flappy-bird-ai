@@ -10,6 +10,10 @@ class Bird {
 		this.flapSound = flapSound;
 		this.fallRotation = -PI / 6;
 
+		this.brain = new NeuralNetwork(5, 8, 1);
+		this.fitness = 0;
+		this.score = 0;
+
 		// move bird down
 		this.move = () => {
 			this.velocity += this.gravity;
@@ -21,6 +25,25 @@ class Bird {
 			this.flapSound.play();
 			this.velocity = this.flapPower;
 		};
+	}
+
+	decide(pipes) {
+		let nextPipe = pipes[0];
+		for (let i = 0; i < pipes.length; i++) {
+			if (!pipes[i].passed && pipes[i].x + pipes[i].width > this.x) {
+				nextPipe = pipes[i];
+				break;
+			}
+		}
+		const inputs = [
+			this.y / height,
+			this.velocity / 10, // Normalize velocity
+			nextPipe.topPipeY + 1320 / height,
+			nextPipe.bottomPipeY / height,
+			nextPipe.x / width,
+		];
+		const output = this.brain.feedforward(inputs);
+		if (output[0] > 0.5) this.flap();
 	}
 
 	show(img) {
@@ -47,7 +70,14 @@ class Bird {
 		pop();
 	}
 
-	update() {
+	update(pipes) {
 		this.move();
+		this.decide(pipes);
+	}
+
+	copy() {
+		let birdCopy = new Bird(this.flapSound);
+		birdCopy.brain = this.brain.copy();
+		return birdCopy;
 	}
 }
