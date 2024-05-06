@@ -1,7 +1,7 @@
 class Ground {
 	constructor() {
 		this.x = 0;
-		this.y = height - 80;
+		this.y = height - 160;
 		this.speed = 5;
 
 		this.move = () => {
@@ -9,11 +9,11 @@ class Ground {
 		};
 	}
 
-	show() {
-		fill(50, 50, 50);
-		rect(this.x, this.y, 2000, 80);
+	show(img) {
+		image(img, this.x, this.y, 2000, 160);
 	}
 
+	// move the ground to the left and reset the position when it has reached halfway through it's width
 	update() {
 		this.move();
 		if (this.x <= -1000) {
@@ -22,7 +22,7 @@ class Ground {
 	}
 
 	collidedWithBird(bird) {
-		if (bird.y + bird.height / 2 > this.y) {
+		if (bird.y + bird.height > this.y) {
 			return true;
 		} else {
 			return false;

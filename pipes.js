@@ -4,8 +4,8 @@ class Pipes {
 		this.w = 140; // pipe width
 		this.h = 1320; // pipe height
 		this.speed = 5;
-		this.spacing = 300; // total gap between top and bottom pipe
-		this.gapCenter = random(400, 900); // the center of the gap between top and bottom pipe
+		this.spacing = 250; // total gap between top and bottom pipe
+		this.gapCenter = random(300, 900); // the center of the gap between top and bottom pipe
 		this.topPipeY = this.gapCenter - this.spacing / 2 - 1320;
 		this.bottomPipeY = this.gapCenter + this.spacing / 2;
 		this.passed = false; // has the bird passed the pipe
@@ -16,10 +16,9 @@ class Pipes {
 	}
 
 	// display the pipes
-	show() {
-		fill(0, 255, 0);
-		rect(this.x, this.topPipeY, this.w, this.h);
-		rect(this.x, this.bottomPipeY, this.w, this.h);
+	show(upImg, downImg) {
+		image(upImg, this.x, this.bottomPipeY, this.w, this.h);
+		image(downImg, this.x, this.topPipeY, this.w, this.h);
 	}
 
 	// move pipes to the left
@@ -38,11 +37,11 @@ class Pipes {
 
 	// checks to see if pipe has collided with the bird
 	collidedWithBird(bird) {
-		if (bird.x + bird.width / 2 > this.x && bird.x - bird.width / 2 < this.x + this.w) {
+		if (bird.x + bird.width > this.x && bird.x < this.x + this.w) {
 			// check top pipe
-			if (bird.y - bird.height / 2 < this.topPipeY + 1320) return true;
+			if (bird.y < this.topPipeY + 1320) return true;
 			// check bottom pipe
-			if (bird.y + bird.height / 2 > this.bottomPipeY) return true;
+			if (bird.y + bird.height > this.bottomPipeY) return true;
 		} else {
 			return false;
 		}
@@ -50,7 +49,7 @@ class Pipes {
 
 	// checks if bird passed pipe
 	birdPassed(bird) {
-		if (bird.x > this.x + this.w / 2 && this.passed === false) {
+		if (bird.x + bird.width / 2 > this.x + this.w / 2 && this.passed === false) {
 			this.passed = true;
 			return true;
 		}
