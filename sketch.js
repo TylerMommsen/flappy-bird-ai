@@ -1,9 +1,10 @@
-let bird;
 let timer = 100; // timer for spawning pipes
 let pipes = [];
 let ground;
 let gameOver = false;
 let score = 0;
+let populationSize = 100;
+let population;
 
 // visual assets
 let bg, groundImg, birdImg, pipeUpImg, pipeDownImg;
@@ -29,14 +30,27 @@ function preload() {
 
 function setup() {
 	createCanvas(1000, 1320);
-
-	bird = new Bird(flapSound);
 	ground = new Ground();
 	frameRate(60);
+
+	population = new Population(populationSize);
+	population.initializePopulation();
 }
 
 function draw() {
-	if (gameOver) return;
+	if (population.isExtinct()) {
+		return;
+	}
+	image(bg, 0, 0, 1000, 1320); // display background
+
+	// if all birds have died, start next generation
+	// if (gameOver) {
+	// 	// bird = new Bird();
+	// 	pipes = [];
+	// 	timer = 100;
+	// 	score = 0;
+	// 	gameOver = false;
+	// }
 
 	// handle all the logic stuff
 	if (timer >= 100) {
@@ -45,49 +59,36 @@ function draw() {
 	}
 	timer++;
 
-	for (let i = pipes.length - 1; i > 0; i--) {
+	for (let i = pipes.length - 1; i >= 0; i--) {
 		pipes[i].update();
+		// if (pipes[i].collidedWithBird(bird)) {
+		// 	// hitSound.play();
+		// 	// setTimeout(() => {
+		// 	// 	failSound.play();
+		// 	// }, 500);
+		// 	gameOver = true;
+		// }
 
-		if (pipes[i].collidedWithBird(bird)) {
-			hitSound.play();
-			setTimeout(() => {
-				failSound.play();
-			}, 500);
-			gameOver = true;
-		}
-
-		if (pipes[i].birdPassed(bird)) {
-			pointSound.play();
-			score++;
-		}
-
-		if (pipes[i].offScreen()) {
-			pipes.splice(i, 1);
-		}
+		// if (pipes[i].birdPassed(bird)) {
+		// 	// pointSound.play();
+		// 	score++;
+		// }
 	}
 
-	bird.update(pipes);
-
-	if (ground.collidedWithBird(bird)) {
-		hitSound.play();
-		setTimeout(() => {
-			failSound.play();
-		}, 500);
-		gameOver = true;
+	if (population.isExtinct() === false) {
+		population.updateBirds();
 	}
+
 	ground.update();
 
 	// displaying/showing all the visual stuff
-	image(bg, 0, 0, 1000, 1320); // display background
 
-	// display pipes
-	for (let i = 0; i < pipes.length; i++) {
-		pipes[i].show(pipeUpImg, pipeDownImg);
+	if (population.isExtinct() === false) {
+		population.showBirds(birdImg);
 	}
 
-	// display bird and ground
-	bird.show(birdImg);
-	ground.show(groundImg);
+	for (let i = 0; i < pipes.length; i++) pipes[i].show(pipeUpImg, pipeDownImg); // pipes
+	ground.show(groundImg); // ground
 
 	// display score
 	textFont(flappyFont);
@@ -99,8 +100,8 @@ function draw() {
 	text(score, width / 2, 160);
 }
 
-function keyPressed() {
-	if (key === " ") {
-		bird.flap();
-	}
-}
+// function keyPressed() {
+// 	if (key === " ") {
+// 		bird.flap();
+// 	}
+// }

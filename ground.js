@@ -21,11 +21,11 @@ class Ground {
 		}
 	}
 
-	collidedWithBird(bird) {
-		if (bird.y + bird.height > this.y) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	// collidedWithBird(bird) {
+	// 	if (bird.y + bird.height > this.y) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 }
