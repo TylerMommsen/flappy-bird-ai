@@ -11,12 +11,23 @@
 			body {
 				display: flex;
 				justify-content: center;
-				align-items: center;
 				margin-top: 15px;
+			}
+
+			.ai-info {
+				position: absolute;
+				left: 12%;
+				font-weight: bold;
+				font-size: 60px;
+				font-family: sans-serif;
 			}
 		</style>
 	</head>
 	<body>
+		<div class="ai-info">
+			<p id="gen-number">Generation: 1</p>
+			<p id="population-count">Population: 300</p>
+		</div>
 		<script src="population.js"></script>
 		<script src="sketch.js"></script>
 		<script src="bird.js"></script>
@@ -25,5 +36,6 @@
 		<script src="connection.js"></script>
 		<script src="node.js"></script>
 		<script src="brain.js"></script>
+		<script src="species.js"></script>
 	</body>
 </html>

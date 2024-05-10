@@ -18,4 +18,11 @@ class Node {
 			this.connections[i].toNode.inputValue += this.connections[i].weight * this.outputValue;
 		}
 	}
+
+	clone() {
+		let clone = new Node(this.id);
+		clone.id = this.id;
+		clone.layer = this.layer;
+		return clone;
+	}
 }
