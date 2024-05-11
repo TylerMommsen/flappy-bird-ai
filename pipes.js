@@ -1,14 +1,20 @@
 class Pipes {
-	constructor() {
+	constructor(index) {
 		this.x = width; // pipe x position
 		this.w = 140; // pipe width
 		this.h = height; // pipe height
 		this.speed = 5;
-		this.spacing = 275; // total gap between top and bottom pipe
-		this.gapCenter = random(300, 900); // the center of the gap between top and bottom pipe
-		this.topPipeY = this.gapCenter - this.spacing / 2 - height;
+		this.spacing = 250; // total gap between top and bottom pipe
+		if (randomPipeHeights.length <= index) {
+			let gapCenter = random(300, 900);
+			randomPipeHeights.push(gapCenter);
+		}
+		this.gapCenter = randomPipeHeights[index]; // the center of the gap between top and bottom pipe
+		this.topPipeY = this.gapCenter - this.spacing / 2 - 1320;
 		this.bottomPipeY = this.gapCenter + this.spacing / 2;
-		this.passed = false; // has the bird passed the pipe
+		this.passedForAI = false; // has the bird passed the pipe
+		this.passedForScore = false;
+		this.passedBirds = new Set();
 	}
 
 	move() {
@@ -35,19 +41,19 @@ class Pipes {
 		}
 	}
 
-	// checks if bird passed pipe for bird vision
-	birdPassed(bird) {
-		if (bird.x > this.x + this.w && this.passed === false) {
-			this.passed = true;
+	// checks if bird passed pipe for bird vision inputs
+	birdPassedForAI(bird) {
+		if (bird.x > this.x + this.w && !this.passedForAI) {
+			this.passedForAI = true;
 			return true;
 		}
 		return false;
 	}
 
-	// checks if bird passed pipe for score
+	// checks if bird passed pipe for score display
 	birdPassedForScore(bird) {
-		if (bird.x + bird.width / 2 > this.x + this.w / 2 && this.passed === false) {
-			this.passed = true;
+		if (bird.x + bird.width / 2 > this.x + this.w / 2 && this.passedForScore === false) {
+			this.passedForScore = true;
 			return true;
 		}
 		return false;

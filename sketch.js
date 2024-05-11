@@ -1,20 +1,18 @@
-let timer = 100; // timer for spawning pipes
-let pipes = [];
 let ground;
-let score = 0; // displays amount of pipes passed
-let populationSize = 500;
+let displayScore = 0; // displays amount of pipes passed
+let updatedDisplayScore = false;
+let populationSize = 300;
 let population;
 let alive = populationSize; // used to display total alive population
 let gameSpeed = 1; // you get it
-let visualizationMode = false; // visualizing the bird's vision
+let nextConnectionNumber = 1000;
+let randomPipeHeights = [];
+let networkVisualizer;
 
 // visual assets
 let bg, groundImg, birdImg, pipeUpImg, pipeDownImg;
 let flappyFont;
 let hitSound, flapSound, pointSound, failSound;
-
-let generationText = document.getElementById("gen-number");
-let populationCountText = document.getElementById("population-count");
 
 function preload() {
 	// images
@@ -41,39 +39,22 @@ function setup() {
 	frameRate(60);
 
 	population = new Population(populationSize);
-	population.initializePopulation();
+	networkVisualizer = new NetworkVisualizer(population.population[0].brain, 250, 400, 600, 500);
 }
 
 // main game loop
 function draw() {
 	image(bg, 0, 0, 1000, 1320); // display background
+	networkVisualizer.show(population.bestBird);
 
 	for (let i = 0; i < gameSpeed; i++) {
-		// handle all the logic stuff
-		if (timer >= 100) {
-			pipes.push(new Pipes());
-			timer = 0;
-		}
-		timer++;
-
-		// handle pipe logic, and checking if bird passed pipe
-		for (let i = pipes.length - 1; i >= 0; i--) {
-			pipes[i].update();
-
-			if (!pipes[i].passed) {
-				for (let j = 0; j < population.population.length; j++) {
-					if (pipes[i].birdPassedForScore(population.population[j])) score++;
-				}
-			}
-		}
-
 		// if birds alive, then update, otherwise start a new generation
-		if (population.isExtinct() === false) {
+		if (population.allDead() === false) {
 			population.updateBirds();
 		} else {
-			pipes = [];
+			randomPipeHeights = [];
 			timer = 100;
-			score = 0;
+			displayScore = 0;
 			alive = populationSize;
 			population.naturalSelection();
 		}
@@ -83,11 +64,10 @@ function draw() {
 
 	// displaying/showing all the visual stuff
 
-	if (population.isExtinct() === false) {
+	if (population.allDead() === false) {
 		population.showBirds(birdImg);
 	}
 
-	for (let i = 0; i < pipes.length; i++) pipes[i].show(pipeUpImg, pipeDownImg); // pipes
 	ground.show(groundImg); // ground
 
 	// display score
@@ -97,11 +77,14 @@ function draw() {
 	stroke(0);
 	strokeWeight(12);
 	textAlign(CENTER, CENTER);
-	text(score, width / 2, 160);
-
-	// display current generation and total alive
-	generationText.innerHTML = "Generation: " + population.generation;
-	populationCountText.innerHTML = "Population: " + alive;
+	text(displayScore, width / 2, 160);
+	textFont("sans-serif");
+	textSize(50);
+	noStroke();
+	textAlign(LEFT);
+	textStyle(BOLD);
+	text("Generation: " + population.generation, 30, 60);
+	text("Population: " + alive, 30, 140);
 }
 
 function keyPressed() {
@@ -126,5 +109,8 @@ function keyPressed() {
 	}
 	if (key === "t") {
 		gameSpeed = 50;
+	}
+	if (key === "y") {
+		gameSpeed = 100;
 	}
 }

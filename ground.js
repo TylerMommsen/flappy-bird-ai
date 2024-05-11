@@ -20,12 +20,4 @@ class Ground {
 			this.x = 0;
 		}
 	}
-
-	// collidedWithBird(bird) {
-	// 	if (bird.y + bird.height > this.y) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
 }
