@@ -159,7 +159,7 @@ class Bird {
 			let closestPipe = this.closestPipe();
 
 			let distanceToClosestPipe = abs(closestPipe.x - this.x);
-			let lineToTopPipe = abs(closestPipe.topPipeY + 1320 - this.y);
+			let lineToTopPipe = closestPipe.topPipeY + 1320 - this.y;
 			let lineToBottomPipe = abs(this.y - closestPipe.bottomPipeY);
 
 			let normalizedDistanceToClosestPipe = map(distanceToClosestPipe, 0, 750 + this.width, 1, 0);

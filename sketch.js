@@ -1,7 +1,7 @@
 let ground;
 let displayScore = 0; // displays amount of pipes passed
 let updatedDisplayScore = false;
-let populationSize = 300;
+let populationSize = 50;
 let population;
 let alive = populationSize; // used to display total alive population
 let gameSpeed = 1; // you get it
@@ -111,6 +111,6 @@ function keyPressed() {
 		gameSpeed = 50;
 	}
 	if (key === "y") {
-		gameSpeed = 100;
+		gameSpeed = 650;
 	}
 }

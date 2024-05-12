@@ -29,16 +29,26 @@ class NetworkVisualizer {
 		}
 	}
 
-	// draw connections between nodes
+	// Draw connections between nodes, adjusting opacity for disabled connections
 	drawConnections() {
 		this.brain.connections.forEach((connection) => {
-			if (connection.enabled) {
-				let fromPos = this.nodePositions[connection.fromNode.id];
-				let toPos = this.nodePositions[connection.toNode.id];
-				stroke(connection.weight > 0 ? 255 : 0, 0, connection.weight <= 0 ? 255 : 0); // color code based on weight
-				strokeWeight(map(abs(connection.weight), -1, 1, 1, 3)); // stroke weight based on weight
-				line(fromPos.x, fromPos.y, toPos.x, toPos.y);
-			}
+			let fromPos = this.nodePositions[connection.fromNode.id];
+			let toPos = this.nodePositions[connection.toNode.id];
+
+			// Determine the base color based on the weight of the connection
+			let color = connection.weight > 0 ? [255, 0, 0] : [0, 0, 255]; // Red for positive, blue for negative
+
+			// Adjust opacity: full opacity for enabled connections, reduced for disabled
+			let opacity = connection.enabled ? 255 : 100; // Full opacity for enabled, lower for disabled
+
+			// Apply the color with the appropriate opacity
+			stroke(color[0], color[1], color[2], opacity);
+
+			// Set the stroke weight based on the absolute value of the weight
+			strokeWeight(map(abs(connection.weight), -1, 1, 1, 5));
+
+			// Draw the line representing the connection
+			line(fromPos.x, fromPos.y, toPos.x, toPos.y);
 		});
 	}
 
