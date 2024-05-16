@@ -1,13 +1,14 @@
 let ground;
 let displayScore = 0; // displays amount of pipes passed
 let updatedDisplayScore = false;
-let populationSize = 50;
+let populationSize = 100;
 let population;
 let alive = populationSize; // used to display total alive population
 let gameSpeed = 1; // you get it
 let nextConnectionNumber = 1000;
 let randomPipeHeights = [];
 let networkVisualizer;
+let displayVisuals = true;
 
 // visual assets
 let bg, groundImg, birdImg, pipeUpImg, pipeDownImg;
@@ -45,7 +46,9 @@ function setup() {
 // main game loop
 function draw() {
 	image(bg, 0, 0, 1000, 1320); // display background
-	networkVisualizer.show(population.bestBird);
+	if (displayVisuals) {
+		networkVisualizer.show(population.bestBird);
+	}
 
 	for (let i = 0; i < gameSpeed; i++) {
 		// if birds alive, then update, otherwise start a new generation
@@ -78,20 +81,21 @@ function draw() {
 	strokeWeight(12);
 	textAlign(CENTER, CENTER);
 	text(displayScore, width / 2, 160);
-	textFont("sans-serif");
-	textSize(50);
-	noStroke();
-	textAlign(LEFT);
-	textStyle(BOLD);
-	text("Generation: " + population.generation, 30, 60);
-	text("Population: " + alive, 30, 140);
+	if (displayVisuals) {
+		textFont("sans-serif");
+		textSize(50);
+		noStroke();
+		textAlign(LEFT);
+		textStyle(BOLD);
+		text("Generation: " + population.generation, 30, 60);
+		text("Population: " + alive, 30, 140);
+	}
 }
 
 function keyPressed() {
 	// turn on lines to show bird vision
 	if (key === "v") {
-		visualizationMode = !visualizationMode;
-		population.toggleVisualization();
+		displayVisuals = !displayVisuals;
 	}
 
 	// change game speed
@@ -108,7 +112,7 @@ function keyPressed() {
 		gameSpeed = 10;
 	}
 	if (key === "t") {
-		gameSpeed = 50;
+		gameSpeed = 30;
 	}
 	if (key === "y") {
 		gameSpeed = 650;
