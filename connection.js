@@ -21,7 +21,7 @@ class Connection {
 
 	// create copy of the connection
 	clone(fromNode, toNode) {
-		let clone = new Connection(fromNode, toNode, this.weight);
+		let clone = new Connection(fromNode, toNode, this.weight, this.innovationNumber);
 		return clone;
 	}
 }

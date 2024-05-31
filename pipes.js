@@ -6,11 +6,11 @@ class Pipes {
 		this.speed = 5;
 		this.spacing = 250; // total gap between top and bottom pipe
 		if (randomPipeHeights.length <= index) {
-			let gapCenter = random(300, 900);
+			let gapCenter = random(300, height - 420);
 			randomPipeHeights.push(gapCenter);
 		}
 		this.gapCenter = randomPipeHeights[index]; // the center of the gap between top and bottom pipe
-		this.topPipeY = this.gapCenter - this.spacing / 2 - 1320;
+		this.topPipeY = this.gapCenter - this.spacing / 2 - height;
 		this.bottomPipeY = this.gapCenter + this.spacing / 2;
 		this.passedForAI = false; // has the bird passed the pipe
 		this.passedForScore = false;
