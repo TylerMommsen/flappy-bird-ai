@@ -6,8 +6,6 @@ Flappy Bird AI created with NEAT (Neuroevolution of Augmenting Topologies).
 
 [View Live Site Here](https://tylermommsen-flappy-bird-ai.vercel.app/)
 
-If it appears zoomed in, just press `Ctrl -`
-
 Some shortcuts:
 
 - `q` - 1x Speed
